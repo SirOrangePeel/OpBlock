@@ -14,7 +14,7 @@ def login():
         email = request.form.get('email') #Collect email from the form
         password = request.form.get('password') #Collect the password from the form
 
-        user = User.query.filter_by(email=email).first() #Collect all Users from the database with this email. At most there should only be 1 user as email should be unique based on the schema
+        user = Admin.query.filter_by(email=email).first() #Collect all Users from the database with this email. At most there should only be 1 user as email should be unique based on the schema
         if user: #If a user exists
             if check_password_hash(user.password, password): #Check the password against the hashed password
                 flash('Logged in successfully!', category='success') #Message
@@ -32,7 +32,7 @@ def login():
 @login_required #Need to be loged in to log out
 def logout():
     logout_user() #Use flask to logout user
-    return redirect(url_for('admin/auth.login')) #Redirect to the login page
+    return redirect(url_for('admin.dashboard')) #Redirect to the login page
 
 
 @auth.route('/sign-up', methods=['GET', 'POST'])
