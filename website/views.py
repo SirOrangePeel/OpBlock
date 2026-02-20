@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
-from .models import Walk, Active
+from .models import Walk, Active, Walker
 from sqlalchemy.orm import joinedload
 from . import db
 import json
@@ -84,3 +84,38 @@ def pending_data():
         .all()
     )
     return render_template("partials/pending_list.html", pending_walks=pending_walks)
+
+
+@views.route("/create-walker", methods=["GET", "POST"])
+def create_walker():
+
+    if request.method == "POST":
+        ccid = request.form.get("ccid")
+        email = request.form.get("email")
+        f_name = request.form.get("f_name")
+        l_name = request.form.get("l_name")
+        status = request.form.get("status")
+        schedule = request.form.get("schedule")
+
+        # Check if email already exists
+        existing = Walker.query.filter_by(email=email).first()
+        if existing:
+            flash("Email already exists.", "error")
+            return redirect("/create-walker")
+
+        new_walker = Walker(
+            ccid=ccid,
+            email=email,
+            f_name=f_name,
+            l_name=l_name,
+            status=status,
+            schedule=schedule
+        )
+
+        db.session.add(new_walker)
+        db.session.commit()
+
+        flash("Walker created successfully!", "success")
+        return render_template("walker_confirm.html", walker=new_walker)
+
+    return render_template("create_walker.html")

@@ -9,7 +9,7 @@ auth = Blueprint('auth', __name__) #Create the blueprint
 
 @auth.route('/login', methods=['GET', 'POST']) 
 def login():
-    return render_template("login.html", user=current_user) #Render the login page
+    return render_template("admin/login.html", user=current_user) #Render the login page
 
 
 @auth.route('/logout')

@@ -26,10 +26,12 @@ def create_app():
     #Import the blueprints for views and auth
     from .views import views
     from .auth import auth
+    from .admin import admin
 
     #Register the correct prefixes
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
+    app.register_blueprint(admin, url_prefix='/admin')
 
     #Import the database model schemas
     from .models import Admin, Walk, Walker, Recurring, Active, History
