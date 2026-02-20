@@ -9,6 +9,10 @@ class Walk(db.Model): # Database schema for Notes
     email = db.Column(db.String(150), unique=True)
     f_name = db.Column(db.String(25))
     l_name = db.Column(db.String(25))
+    lat_start = Column(Numeric(9, 6), nullable=False)
+    lon_start = Column(Numeric(9, 6), nullable=False)
+    lat_end = Column(Numeric(9, 6), nullable=False)
+    lon_end = Column(Numeric(9, 6), nullable=False)
 
 
 class Walker(db.Model): 
