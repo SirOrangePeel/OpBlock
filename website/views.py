@@ -1,10 +1,61 @@
-from flask import Blueprint, render_template, request, flash, jsonify
+from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
+from .models import Walk, Active
 from . import db
 import json
+import re
 
-views = Blueprint('views', __name__) #Create a blueprint for this files. IE the "views"
+views = Blueprint('views', __name__)
 
-@views.route("/")
+# Home Page
+@views.route("/home", methods=["GET", "POST"])
 def home():
-    return render_template("home.html")
+    if request.method == "POST":
+        return redirect(url_for("views.request_page"))
+
+    return render_template("index.html")
+
+
+@views.route("/request", methods=["GET", "POST"])
+def request_page():
+    if request.method == "POST":
+
+        # Form Data
+        ccid = request.form.get("student_id")
+        email = request.form.get("email")
+        f_name = request.form.get("first_name")
+        l_name = request.form.get("last_name")
+
+        lat_start = request.form.get("lat_start")
+        lon_start = request.form.get("lon_start")
+        lat_end = request.form.get("lat_end")
+        lon_end = request.form.get("lon_end")
+
+        # Create Walk
+        new_walk = Walk(
+            ccid=ccid,
+            email=email,
+            f_name=f_name,
+            l_name=l_name,
+            lat_start=lat_start,
+            lon_start=lon_start,
+            lat_end=lat_end,
+            lon_end=lon_end
+        )
+
+        db.session.add(new_walk)
+        db.session.commit()
+
+
+        new_active = Active(
+            walk_id=new_walk.id,
+            status="Pending"
+        )
+
+        db.session.add(new_active)
+        db.session.commit()
+
+        flash("Walk request submitted and activated!", "success")
+        return redirect(url_for("views.request_page"))
+
+    return render_template("request.html")

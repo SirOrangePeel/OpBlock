@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Safe Walk{% endblock %}</title>
+</head>
+<body>
+
+    <!-- ===== TOP HEADER ===== -->
+    <header class="main-header">
+        <h1>Safe Walk</h1>
+    </header>
+
+    <!-- ===== PAGE CONTENT ===== -->
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!-- ===== CONTACT FOOTER ===== -->
+    <footer class="footer">
+        <div class="footer-content">
+            <h3>Contact Us</h3>
+            <p>📞 Phone: (780) 123-4567</p>
+            <p>✉️ Email: safewalk@university.ca</p>
+            <p>📍 Location: Student Services Building</p>
+        </div>
+    </footer>
+
+</body>
+</html>
