@@ -37,14 +37,16 @@ def create_app():
     from .views import views
     from .auth import auth
     from .mail import mailer
+    from .ldropdown import ldropdown
 
     #Register the correct prefixes
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(mailer, url_prefix='/')
+    app.register_blueprint(ldropdown, url_prefix='/')
 
     #Import the database model schemas
-    from .models import Admin, Walk, Walker, Recurring, Active, History
+    from .models import Admin, Walk, Walker, Recurring, Active, History, Locations
     
     #Using the app context (The connected database and models) create the schemas
     create_database(app) #Creating the database

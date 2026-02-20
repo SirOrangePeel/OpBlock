@@ -37,7 +37,7 @@ def request_page():
         f_name = request.form.get("first_name")
         l_name = request.form.get("last_name")
 
-        lat_start = request.form.get("lat_start")
+        s_loc = request.form.get("lat_start")
         lon_start = request.form.get("lon_start")
         lat_end = request.form.get("lat_end")
         lon_end = request.form.get("lon_end")

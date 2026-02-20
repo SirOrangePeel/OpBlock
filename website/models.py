@@ -22,8 +22,6 @@ class Walk(db.Model): # Database schema for Notes
     def coordinates(self, value):
         self.e_loc_lat, self.e_loc_lng = value
 
-
-
 class Walker(db.Model): 
     id = db.Column(db.Integer, primary_key=True)
     ccid = db.Column(db.String(25))
