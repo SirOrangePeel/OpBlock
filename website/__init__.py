@@ -38,8 +38,8 @@ def create_app():
 
     if not app.config['SECRET_KEY']:
         raise ValueError("SECRET_KEY not set")
-    if not app.config['API_KEY']:
-        raise ValueError("API_KEY not set")
+    if not app.config['MAPS_KEY']:
+        raise ValueError("MAPS_KEY not set")
 
     db.init_app(app) #Connect the database to the app
 
@@ -47,11 +47,13 @@ def create_app():
     from .views import views
     from .auth import auth
     from .mail import mailer
+    from .admin import admin
 
     #Register the correct prefixes
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(mailer, url_prefix='/')
+    app.register_blueprint(admin, url_prefix='/admin')
 
     #Import the database model schemas
     from .models import Admin, Walk, Walker, Recurring, Active, History

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Pending Walks{% endblock %}
+
+{% block content %}
+
+<a class="btn" href="{{ url_for('admin.dashboard') }}">Back to Dashboard</a>
+
+
+<h2>Pending Walk Requests</h2>
+
+<div id="walk-container">
+    {% include "partials/pending_list.html" %}
+</div>
+
+<script>
+    setInterval(async () => {
+        const response = await fetch("/pending-data");
+        const html = await response.text();
+        document.getElementById("walk-container").innerHTML = html;
+    }, 5000);
+</script>
+
+{% endblock %}

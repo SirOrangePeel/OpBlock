@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
-from .models import Walk, Active
+from .models import Walk, Active, Walker
+from sqlalchemy.orm import joinedload
 from . import db
 import json
 import re
@@ -8,12 +9,19 @@ import re
 views = Blueprint('views', __name__)
 
 # Home Page
-@views.route("/home", methods=["GET", "POST"])
+@views.route("/", methods=["GET", "POST"])
 def home():
     if request.method == "POST":
-        return redirect(url_for("views.request_page"))
+        if request.form.get('form_type') == 'form1':
+            return redirect(url_for("views.request_page"))
+        else:
+            return redirect(url_for("views.contact"))
 
     return render_template("index.html")
+
+@views.route("/contact")
+def contact():
+    return render_template("contact.html")
 
 
 @views.route("/request", methods=["GET", "POST"])
@@ -59,3 +67,4 @@ def request_page():
         return redirect(url_for("views.request_page"))
 
     return render_template("request.html")
+
