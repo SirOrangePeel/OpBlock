@@ -11,10 +11,6 @@ views = Blueprint('views', __name__)
 @views.route("/home", methods=["GET", "POST"])
 def home():
     if request.method == "POST":
-        # Optional: get form data
-        name = request.form.get("name")
-
-        # Redirect to request page
         return redirect(url_for("views.request_page"))
 
     return render_template("index.html")
