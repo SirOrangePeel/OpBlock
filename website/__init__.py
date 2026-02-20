@@ -14,7 +14,7 @@ def create_app():
     app = Flask(__name__) #Create app
     app.config['SECRET_KEY'] = os.getenv("FLASK_SECRET_KEY")  #Secret key.
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}' #Location of the database. IE the same folder as parent 
-    app.config["MAPS_KEY"] = os.getenv("MAPS_API_KEY") #Maps API key
+    app.config["MAPS_KEY"] = os.getenv("API_KEY") #Maps API key
 
     if not app.config['SECRET_KEY']:
         raise ValueError("SECRET_KEY not set")

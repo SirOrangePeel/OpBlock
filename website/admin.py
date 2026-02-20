@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, flash
+from flask_login import login_required, current_user
 from .models import Walker, Active
 from sqlalchemy.orm import joinedload
 from . import db
@@ -6,15 +7,18 @@ from . import db
 admin = Blueprint("admin", __name__)
 
 @admin.route("/dashboard")
+@login_required
 def dashboard():
     return render_template("admin/dashboard.html")
 
 @admin.route("/view-volunteers", methods=["GET", "POST"])
+@login_required
 def view_Volunteers():
     
     return render_template("admin/view_volunteers.html")
 
 @admin.route("/create-walker", methods=["GET", "POST"])
+@login_required
 def create_walker():
 
     if request.method == "POST":
@@ -48,6 +52,7 @@ def create_walker():
     return render_template("admin/create_walker.html")
 
 @admin.route("/pending")
+@login_required
 def pending():
 
     pending_walks = Active.query.filter_by(status="Pending").all()
@@ -55,6 +60,7 @@ def pending():
     return render_template("pending.html", pending_walks=pending_walks)
 
 @admin.route("/pending-data")
+@login_required
 def pending_data():
     pending_walks = (
         Active.query
