@@ -3,12 +3,16 @@ from flask_login import UserMixin
 from sqlalchemy.sql import func
 
 
-class Walk(db.Model): #Database schema for Notes
+class Walk(db.Model): # Database schema for Notes
     id = db.Column(db.Integer, primary_key=True)
     ccid = db.Column(db.String(25))
     email = db.Column(db.String(150), unique=True)
     f_name = db.Column(db.String(25))
     l_name = db.Column(db.String(25))
+    lat_start = Column(Numeric(9, 6), nullable=False)
+    lon_start = Column(Numeric(9, 6), nullable=False)
+    lat_end = Column(Numeric(9, 6), nullable=False)
+    lon_end = Column(Numeric(9, 6), nullable=False)
 
 
 class Walker(db.Model): 

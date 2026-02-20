@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
-from .models import Walk
+from .models import Walk, Active
 from . import db
 import json
 import re
@@ -16,43 +16,46 @@ def home():
     return render_template("index.html")
 
 
-
 @views.route("/request", methods=["GET", "POST"])
 def request_page():
     if request.method == "POST":
 
+        # Form Data
         ccid = request.form.get("student_id")
+        email = request.form.get("email")
         f_name = request.form.get("first_name")
         l_name = request.form.get("last_name")
-        email = request.form.get("email")
-        
-        
-        if not ccid or len(ccid) < 25:
-            flash("Student ID must be at least 3 characters.", "error")
-            return redirect(url_for("views.request_page"))
 
-        if not f_name or not l_name:
-            flash("First and Last name are required.", "error")
-            return redirect(url_for("views.request_page"))
+        lat_start = request.form.get("lat_start")
+        lon_start = request.form.get("lon_start")
+        lat_end = request.form.get("lat_end")
+        lon_end = request.form.get("lon_end")
 
-        # Basic email regex
-        if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
-            flash("Please enter a valid email address.", "error")
-            return redirect(url_for("views.request_page"))
-        
-
-        # Create Walk object
+        # Create Walk
         new_walk = Walk(
             ccid=ccid,
+            email=email,
             f_name=f_name,
             l_name=l_name,
-            email=email
+            lat_start=lat_start,
+            lon_start=lon_start,
+            lat_end=lat_end,
+            lon_end=lon_end
         )
 
         db.session.add(new_walk)
         db.session.commit()
 
-        flash("Request submitted successfully!", "success")
+
+        new_active = Active(
+            walk_id=new_walk.id,
+            status="Pending"
+        )
+
+        db.session.add(new_active)
+        db.session.commit()
+
+        flash("Walk request submitted and activated!", "success")
         return redirect(url_for("views.request_page"))
 
     return render_template("request.html")
