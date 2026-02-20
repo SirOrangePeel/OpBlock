@@ -20,7 +20,7 @@ def home():
         else:
             return redirect(url_for("views.contact"))
 
-    return render_template("index.html")
+    return render_template("home.html")
 
 @views.route("/contact")
 def contact():
