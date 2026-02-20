@@ -3,7 +3,7 @@ from flask_login import UserMixin
 from sqlalchemy.sql import func
 
 
-class Walk(db.Model): #Database schema for Notes
+class Walk(db.Model): # Database schema for Notes
     id = db.Column(db.Integer, primary_key=True)
     ccid = db.Column(db.String(25))
     email = db.Column(db.String(150), unique=True)
