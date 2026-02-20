@@ -90,37 +90,24 @@
 
     .buttons {
         display: flex;
-        gap: 20px;
         flex-wrap: wrap;
         justify-content: center;
     }
 
     .btn {  
-        padding: 14px 28px;
+        padding: 18px 48px;
         border-radius: 10px;
         font-weight: 600;
         text-decoration: none;
         transition: 0.3s ease;
-    }
-
-    .btn-primary {
+        margin-right: 32px;
+        border: 2px solid var(--text-main-black);
         background-color: var(--primary-color);
         color: var(--button-text-dark);
     }
 
-    .btn-primary:hover {
+    .btn:hover {
         background-color: var(--primary-hover);
-    }
-
-    .btn-secondary {
-        border: 2px solid var(--primary-color);
-        color: var(--text-main-black);
-    }
-
-    .btn-secondary:hover {
-        background-color: var(--primary-hover);
-        border: 2px solid var(--primary-hover);
-        color: var(--button-text-dark);
     }
 
     .features {
@@ -214,6 +201,8 @@
   <div class="buttons">
     <form method="POST">
         <button type="submit" name="form_type" value="form1" class="btn btn-primary">Request a Walker</button>
+    </form>
+    <form method="POST">
         <button type="submit" name="form_type" value="form2" class="btn btn-secondary">Contact</button>
     </form>
   </div>
