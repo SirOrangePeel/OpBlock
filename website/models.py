@@ -15,11 +15,11 @@ class Walk(db.Model): # Database schema for Notes
     e_loc_lng = db.Column(db.Integer, nullable=False)
 
     @property
-    def get_coordinates(self):
+    def coordinates(self):
         return (self.e_loc_lat, self.e_loc_lng)
 
     @coordinates.setter
-    def set_coordinates(self, value):
+    def coordinates(self, value):
         self.e_loc_lat, self.e_loc_lng = value
 
 
