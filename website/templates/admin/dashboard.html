@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h2>Admin Dashboard</h2>
+
+<a class="btn" href="{{ url_for('admin.create_walker') }}">Create Walker</a>
+<a class="btn" href="{{ url_for('admin.pending') }}">View Pending Walks</a>
+<br/>
+<a class="btn" href="{{ url_for('auth.logout') }}">Log Out</a>
+
+
+{% endblock %}

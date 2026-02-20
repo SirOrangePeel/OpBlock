@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+
+    <a class="btn" href="{{ url_for('admin.dashboard') }}">Back to Dashboard</a>
+
+    <h2>Create Walker</h2>
+
+    
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="alert {{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endwith %}
+
+    <form method="POST">
+
+        <label>CCID</label>
+        <input type="text" name="ccid" required>
+
+        <label>Email</label>
+        <input type="email" name="email" required>
+
+        <label>First Name</label>
+        <input type="text" name="f_name" required>
+
+        <label>Last Name</label>
+        <input type="text" name="l_name" required>
+
+        <label>Schedule</label>
+        <textarea name="schedule" rows="4"></textarea>
+
+        <button type="submit">Create Walker</button>
+
+    </form>
+</div>
+
+<style>
+.container {
+    max-width: 500px;
+    margin: auto;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0 20px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.alert.success { color: green; }
+.alert.error { color: red; }
+</style>
+
+{% endblock %}

@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
-from .models import Walk, Active
+from .models import Walk, Active, Walker
 from sqlalchemy.orm import joinedload
 from . import db
 import json
@@ -71,24 +71,6 @@ def request_page():
 
     return render_template("request.html")
 
-@views.route("/pending")
-def pending():
-
-    pending_walks = Active.query.filter_by(status="Pending").all()
-
-    return render_template("pending.html", pending_walks=pending_walks)
-
-@views.route("/pending-data")
-def pending_data():
-    pending_walks = (
-        Active.query
-        .options(joinedload(Active.walk))
-        .filter_by(status="Pending")
-        .all()
-    )
-    return render_template("partials/pending_list.html", pending_walks=pending_walks)
-
-    return render_template("home.html")
 
 @views.route("/map")
 def map():
