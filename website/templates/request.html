@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Student Request{% endblock %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="flash {{ category }}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+{% block content %}
+<h2>Walk Request Form</h2>
+
+<form method="POST">
+
+    <label>Student ID (CCID):</label>
+    <input type="text" name="student_id" required><br><br>
+
+    <label>Email:</label>
+    <input type="email" name="email" required><br><br>
+
+    <label>First Name:</label>
+    <input type="text" name="first_name" required><br><br>
+
+    <label>Last Name:</label>
+    <input type="text" name="last_name" required><br><br>
+
+    <h3>Start Location</h3>
+    <label>Latitude:</label>
+    <input type="number" step="0.000001" name="lat_start" required><br>
+
+    <label>Longitude:</label>
+    <input type="number" step="0.000001" name="lon_start" required><br><br>
+
+    <h3>End Location</h3>
+    <label>Latitude:</label>
+    <input type="number" step="0.000001" name="lat_end" required><br>
+
+    <label>Longitude:</label>
+    <input type="number" step="0.000001" name="lon_end" required><br><br>
+
+    <button type="submit">Submit Request</button>
+
+</form>
+
+{% endblock %}

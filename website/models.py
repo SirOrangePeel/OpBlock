@@ -6,7 +6,7 @@ from sqlalchemy.sql import func
 class Walk(db.Model): # Database schema for Notes
     id = db.Column(db.Integer, primary_key=True)
     ccid = db.Column(db.String(25))
-    email = db.Column(db.String(150), unique=True)
+    email = db.Column(db.String(150), unique=False)
     f_name = db.Column(db.String(25))
     l_name = db.Column(db.String(25))
     s_loc = db.Column(db.Integer, db.ForeignKey('locations.location_id'))
@@ -53,6 +53,9 @@ class Active(db.Model):
     date = db.Column(db.DateTime(timezone=True), default=func.now()) #func just returns the current datetime
     walk_id = db.Column(db.Integer, db.ForeignKey('walk.id'))
     status = db.Column(db.String(25))
+    
+    walk = db.relationship("Walk", backref="active_entries")
+    
 
 class History(db.Model): 
     id = db.Column(db.Integer, primary_key=True)
