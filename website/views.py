@@ -13,5 +13,5 @@ def home():
 def map():
     return render_template(
         "map.html",
-        maps_key=current_app.config["MAPS_KEY"]
+        maps_key=views.config["MAPS_KEY"]
     )
