@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <h2>Walker Created Successfully</h2>
+
+    <a class="btn" href="{{ url_for('admin.dashboard') }}">Back to Dashboard</a>
+
+
+    <div class="card">
+        <p><strong>CCID:</strong> {{ walker.ccid }}</p>
+        <p><strong>Email:</strong> {{ walker.email }}</p>
+        <p><strong>Name:</strong> {{ walker.f_name }} {{ walker.l_name }}</p>
+        <p><strong>Status:</strong> {{ walker.status }}</p>
+        <p><strong>Schedule:</strong> {{ walker.schedule }}</p>
+    </div>
+
+    <a href="/create-walker">Create Another Walker</a>
+</div>
+
+<style>
+.container {
+    max-width: 500px;
+    margin: auto;
+}
+
+.card {
+    padding: 20px;
+    border-radius: 15px;
+    background: #f3f4f6;
+    margin-bottom: 20px;
+}
+</style>
+
+{% endblock %}

@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
-from .models import Walk, Active
+from .models import Walk, Active, Walker
 from sqlalchemy.orm import joinedload
 from . import db
 import json
