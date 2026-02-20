@@ -1,0 +1,251 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>OpBlock</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+    :root {
+    --gradient-start: #FF930F;
+    --gradient-end: #FAFAFA;
+
+    --primary-color: #ffc021;
+    --primary-hover: #d0d921;
+
+    --background-dark: #111827;
+    --card-background: #1f2937;
+
+    --text-main-black: #0f172a;
+    --text-main-white: #FAFAFA;
+    --text-muted: #0f172a;
+    --text-footer: #0f172a;
+
+    --button-text-dark: #0f172a;
+
+    --chalk-green: #2fb07c;
+    }
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Inter', sans-serif;
+    }
+
+    body {
+        background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+        color: var(--text-main-black);
+    }
+
+    nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 10%;
+    }
+
+    .logo {
+        background: var(--card-background);
+        padding: 8px;
+        border-radius: 4px;
+        text-align: center;
+        transition: 0.3s ease;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary-color);
+    }
+
+    .nav-links a {
+        margin-left: 20px;
+        text-decoration: none;
+        color: var(--text-main-black);
+        font-weight: 500;
+        transition: 0.2s ease;
+    }
+
+    .nav-links a:hover {
+        color: var(--primary-color);
+    }
+
+    .hero {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 100px 20px;
+    }
+
+    .hero h1 {
+        font-size: 3rem;
+        margin-bottom: 20px;
+    }
+
+    .hero p {
+        font-size: 1.2rem;
+        max-width: 600px;
+        margin-bottom: 40px;
+        color: var(--text-muted);
+    }
+
+    .buttons {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .btn {  
+        padding: 14px 28px;
+        border-radius: 10px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.3s ease;
+    }
+
+    .btn-primary {
+        background-color: var(--primary-color);
+        color: var(--button-text-dark);
+    }
+
+    .btn-primary:hover {
+        background-color: var(--primary-hover);
+    }
+
+    .btn-secondary {
+        border: 2px solid var(--primary-color);
+        color: var(--text-main-black);
+    }
+
+    .btn-secondary:hover {
+        background-color: var(--primary-hover);
+        border: 2px solid var(--primary-hover);
+        color: var(--button-text-dark);
+    }
+
+    .features {
+        background-color: var(--background-dark);
+        padding: 80px 10%;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 40px;
+    }
+
+    .feature-card {
+        background: var(--card-background);
+        padding: 30px;
+        border-radius: 16px;
+        text-align: center;
+        transition: 0.3s ease;
+        color: var(--text-main-white)
+    }
+
+    .feature-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .feature-card h3 {
+        margin-bottom: 15px;
+        color: var(--primary-color);
+    }
+
+    footer {
+        text-align: center;
+        padding: 30px;
+        background-color: var(--gradient-start);
+        color: var(--text-footer);
+        font-size: 0.9rem;
+    }
+
+    .chalk-underline {
+    position: relative;
+    display: inline-block;
+    }
+
+    .chalk-underline::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -8px;
+    width: 100%;
+    height: 10px;
+
+    background: repeating-linear-gradient(
+        90deg,
+        var(--chalk-green) 0px,
+        var(--chalk-green) 4px,
+        rgba(56,189,248,0.6) 6px,
+        var(--chalk-green) 8px
+    );
+
+    opacity: 0.7;
+    transform: rotate(-2deg);
+    height:12px;
+    opacity:0.6px;
+    border-radius: 10px;
+    filter: blur(1px);
+    }
+
+    @media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2.2rem;
+    }
+    }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">OpBlock</div>
+  <div class="nav-links">
+    <a href="#">How It Works</a>
+    <a href="#">Request Walk</a>
+    <a href="#">Volunteer</a>
+    <a href="#">Login</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <h1 class="chalk-underline">Keep The Ops Off Your Blocks.</h1>
+  <p class="green-desc">
+    OpBlock connects you with trusted volunteers to ensure you never have to walk alone at night. 
+    Request a walk, track your escort in real time, and arrive safely.
+  </p>
+  <div class="buttons">
+    <a href="{{ url_for('views.map') }}" class="btn btn-primary">Request a Walker</a>
+    <a href="#" class="btn btn-secondary">Become a Volunteer</a>
+  </div>
+</section>
+
+<section class="features">
+  <div class="feature-card">
+    <h3>Real-Time Tracking</h3>
+    <p>Track your OpBlock volunteer live for peace of mind.</p>
+  </div>
+  <div class="feature-card">
+    <h3>Verified Volunteers</h3>
+    <p>All volunteers are vetted and approved for safety and reliability.</p>
+  </div>
+  <div class="feature-card">
+    <h3>Quick Requests</h3>
+    <p>Request a walk in seconds and get matched instantly.</p>
+  </div>
+  <div class="feature-card">
+    <h3>Campus & Community</h3>
+    <p>Designed for universities and local communities.</p>
+  </div>
+</section>
+
+<footer>
+  © 2026 OpBlock Program. All rights reserved.
+</footer>
+
+</body>
+</html>
+{% block content %}
+
+
+{% endblock %}

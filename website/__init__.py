@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
 from os import path
 from flask_login import LoginManager
@@ -7,11 +8,20 @@ import os
 load_dotenv() # Load variables from .env to environment
 
 db = SQLAlchemy() #Start database object
+mail = Mail() # instantiate the mail class
 DB_NAME = "database.db" #Name of database
 
 
+def env_bool(name: str, default: bool = False) -> bool:
+    v = os.getenv(name)
+    if v is None:
+        return default
+    return v.strip().lower() in ("1", "true", "yes", "y", "on")
+    
+
 def create_app():
     app = Flask(__name__) #Create app
+
     app.config['SECRET_KEY'] = os.getenv("FLASK_SECRET_KEY")  #Secret key.
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}' #Location of the database. IE the same folder as parent 
     app.config["MAPS_KEY"] = os.getenv("MAPS_API_KEY") #Maps API key
@@ -26,10 +36,12 @@ def create_app():
     #Import the blueprints for views and auth
     from .views import views
     from .auth import auth
+    from .mail import mailer
 
     #Register the correct prefixes
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
+    app.register_blueprint(mailer, url_prefix='/')
 
     #Import the database model schemas
     from .models import Admin, Walk, Walker, Recurring, Active, History
