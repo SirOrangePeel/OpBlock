@@ -9,10 +9,8 @@ class Walk(db.Model): # Database schema for Notes
     email = db.Column(db.String(150))
     f_name = db.Column(db.String(25))
     l_name = db.Column(db.String(25))
-    s_loc = db.Column(db.Integer, db.ForeignKey('locations.location_id'))
-
-    e_loc_lat = db.Column(db.Integer, nullable=False)
-    e_loc_lng = db.Column(db.Integer, nullable=False)
+    s_loc = db.Column(db.Integer, db.ForeignKey('location.location_id'))
+    e_loc = db.Column(db.Integer, db.ForeignKey('location.location_id'))
 
     @property
     def coordinates(self):
@@ -21,8 +19,6 @@ class Walk(db.Model): # Database schema for Notes
     @coordinates.setter
     def coordinates(self, value):
         self.e_loc_lat, self.e_loc_lng = value
-
-
 
 class Walker(db.Model): 
     id = db.Column(db.Integer, primary_key=True)
@@ -64,17 +60,8 @@ class History(db.Model):
     success = db.Column(db.Boolean)
     walker = db.Column(db.Integer, db.ForeignKey('walker.id'), nullable=True)
 
-class Locations(db.Model):
+class Location(db.Model):
     location_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(1000), nullable=False)
-
-    latitude = db.Column(db.Float, nullable=False)
-    longitude = db.Column(db.Float, nullable=False)
-
-    @property
-    def coordinates(self):
-        return (self.latitude, self.longitude)
-
-    @coordinates.setter
-    def coordinates(self, value):
-        self.latitude, self.longitude = value
+    pickup = db.Column(db.Boolean)
+    dropoff_20_min_dist = db.Column(db.Boolean)

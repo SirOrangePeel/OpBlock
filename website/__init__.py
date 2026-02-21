@@ -17,14 +17,13 @@ def env_bool(name: str, default: bool = False) -> bool:
     if v is None:
         return default
     return v.strip().lower() in ("1", "true", "yes", "y", "on")
-    
 
 def create_app():
     app = Flask(__name__) #Create app
 
     app.config['SECRET_KEY'] = os.getenv("FLASK_SECRET_KEY")  #Secret key.
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}' #Location of the database. IE the same folder as parent 
-    app.config["MAP_KEY"] = os.getenv("MAP_KEY") #Maps API key
+    app.config["MAPS_KEY"] = os.getenv("MAP_KEY") #Maps API key
 
     # configuration of mail
     app.config['MAIL_SERVER'] = os.getenv("MAIL_SERVER") #Server to use
@@ -38,8 +37,8 @@ def create_app():
 
     if not app.config['SECRET_KEY']:
         raise ValueError("SECRET_KEY not set")
-    if not app.config['MAP_KEY']:
-        raise ValueError("MAP_KEY not set")
+    if not app.config['MAPS_KEY']:
+        raise ValueError("MAPS_KEY not set")
 
     mail.init_app(app)
     db.init_app(app) #Connect the database to the app
@@ -59,7 +58,7 @@ def create_app():
     app.register_blueprint(decisions, url_prefix='/')
 
     #Import the database model schemas
-    from .models import Admin, Walk, Walker, Recurring, Active, History
+    from .models import Admin, Walk, Walker, Recurring, Active, History, Location
     
     #Using the app context (The connected database and models) create the schemas
     create_database(app) #Creating the database
@@ -77,8 +76,51 @@ def create_app():
     return app #Return the configured app
 
 
-def create_database(app): #Function to create database if it doesn't exist
+def create_database(app):
     if not path.exists('website/' + DB_NAME):
         with app.app_context():
             db.create_all()
         print('Created Database!')
+
+    from .models import Location
+
+    with app.app_context():
+        if not Location.query.first() is None:
+            return
+
+        data_folder = "website/data"
+
+        FILE_FLAGS = {
+            "pickup_locations.txt": {"pickup": True,  "dropoff_20_min_dist": False},
+            "stations_20m.txt":      {"pickup": False, "dropoff_20_min_dist": True},
+            "stations_non20m.txt":   {"pickup": False, "dropoff_20_min_dist": False},
+        }
+
+        for file in os.scandir(data_folder):
+
+            if not file.is_file():
+                continue
+
+            print("Seeding:", file.name)
+
+            flags = FILE_FLAGS.get(file.name)
+            if not flags:
+                continue
+
+            with open(file.path, "r") as f:
+                for line in f:
+                    name = line.strip()
+                    if not name:
+                        print("Not work")
+                        continue
+
+                    location = Location(
+                        name=name,
+                        pickup=flags["pickup"],
+                        dropoff_20_min_dist=flags["dropoff_20_min_dist"]
+                    )
+
+                    db.session.add(location)
+
+        db.session.commit()
+        print("Seeded location data.")
