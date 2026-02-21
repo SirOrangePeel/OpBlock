@@ -5,6 +5,9 @@ from sqlalchemy.orm import joinedload
 from . import db
 import json
 import re
+from dotenv import load_dotenv 
+import os 
+load_dotenv() # Load variables from .env to environment
 
 views = Blueprint('views', __name__)
 
@@ -17,7 +20,7 @@ def home():
         else:
             return redirect(url_for("views.contact"))
 
-    return render_template("index.html")
+    return render_template("home.html")
 
 @views.route("/contact")
 def contact():
@@ -74,3 +77,10 @@ def view_walk(active_id):
     active = Active.query.filter_by(id=active_id).first_or_404()
     return render_template("walk.html", walk=active.walk)
 
+
+@views.route("/map")
+def map():
+    return render_template(
+        "maps.html",
+        maps_key=os.getenv("MAPS_API_KEY")
+    )
