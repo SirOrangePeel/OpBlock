@@ -1,7 +1,54 @@
 {% extends "base.html" %} {% block title %}Login{% endblock %} 
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/colors.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/titles.css') }}">
+<style>
+  .form-group {
+    background: var(--text-main-white);
+    border-radius: 22px;
+    padding: 40px;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+    margin-bottom: 40px;
+    transition: 0.3s ease;
+    color: var(--text-main-black);
+  }
+
+  input, select {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      border: 1px solid #444;    /* Subtle border for inputs */
+      color: var(--text-main-black);               /* White text inside inputs */
+      border-radius: 4px;
+  }
+  button {
+      background-color: #007bff; /* Standard blue button */
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+  }
+  .create-account {
+    margin-top: 16px;
+  }
+  .sign-up {
+    text-decoration: none;
+    color: var(--primary-color);
+    font-weight: 500;
+    transition: 0.2s ease;
+  }
+
+  .sign-up:hover {
+    color: var(--text-main-white);
+  }
+</style>
+{% endblock %}
 {% block content %}
+<div class="format">
 <form method="POST">
-  <h3 align="center">Login</h3>
+  <h1 class="title">Log In</h1>
+    <div class="subtitle">Access the admin.</div>
   <div class="form-group">
     <label for="email">Email Address</label>
     <input
@@ -11,8 +58,6 @@
       name="email"
       placeholder="Enter email"
     />
-  </div>
-  <div class="form-group">
     <label for="password">Password</label>
     <input
       type="password"
@@ -26,8 +71,10 @@
   <button type="submit" class="btn btn-primary">Login</button>
 
   <br />
-  Don't have an account?
-    <a class="btn" href="{{ url_for('auth.sign_up') }}">Sign up here</a>
+
+  <div class="create-account">Don't have an account?</div>
+    <a class="sign-up" href="{{ url_for('auth.sign_up') }}">Sign up here</a>
 
 </form>
+</div>
 {% endblock %}

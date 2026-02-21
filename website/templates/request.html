@@ -1,6 +1,37 @@
 {% extends "base.html" %}
 {% block title %}Student Request{% endblock %}
 
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/colors.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/titles.css') }}">
+<style>
+.info-card {
+    background: var(--text-main-white);
+    border-radius: 22px;
+    padding: 30px;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+    margin-bottom: 20px;
+    transition: 0.3s ease;
+    color: var(--text-main-black);
+}
+input, select {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #444;    /* Subtle border for inputs */
+    color: var(--text-main-black);               /* White text inside inputs */
+    border-radius: 4px;
+}
+button {
+  background-color: #007bff; /* Standard blue button */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+</style>
+{% endblock %}
+
 {% block content %}
 {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
@@ -10,10 +41,12 @@
   {% endif %}
 {% endwith %}
 
-<h2>Walk Request Form</h2>
+<h1 class="title">Create a Request</h1>
+    <div class="subtitle">Please let us know what you need.</div> 
 
-<div style="display: flex; gap: 40px; align-items: flex-start;">
+<div style="display: flex; gap: 20px; align-items: flex-start;">
   <form method="POST">
+    <div class="info-card">
     <label>Student ID (CCID):</label>
     <input type="text" name="student_id" required><br><br>
     <label>Email:</label>
@@ -47,7 +80,7 @@
       </option>
       {% endfor %}
     </select><br><br>
-
+    </div>
     <button type="submit">Submit Request</button>
   </form>
 
