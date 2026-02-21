@@ -3,6 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Safe Walk{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/colors.css') }}">
+    <style>
+        * {
+            margin: 10;
+            padding: 10;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: var(--text-main-black);
+            color: var(--text-main-white);
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 10%;
+        }
+        .logo {
+                background: var(--card-background);
+                padding: 8px;
+                border-radius: 4px;
+                text-align: center;
+                transition: 0.3s ease;
+                font-size: 1.5rem;
+                font-weight: 700;
+                color: var(--primary-color);
+                text-decoration: none;
+        }
+        .container {
+            background: var(--card-background); 
+            max-width: 900px;   /* limits width */
+            width: 100%;
+
+            margin: 60px auto;  /* centers it horizontally */
+            padding: 60px 40px;
+
+            border-radius: 20px; /* optional but looks clean */
+        }
+        .nav-links a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: var(--text-main-black);
+            font-weight: 500;
+            transition: 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-main-white);
+        }
+                
+    </style>
 </head>
 <body>
     <!-- ===== Flash Messages =====
@@ -30,11 +83,21 @@
 
     <!-- ===== TOP HEADER ===== -->
     <header class="main-header">
-        <h1>OpBlock</h1>
+        <nav>
+            <a href="/" class="logo">OpBlock</a>
+            <div class="nav-links">
+                <a href="#">How It Works</a>
+                <a href="#">Request Walk</a>
+                <a href="#">Volunteer</a>
+                <a href="#">Login</a>
+            </div>
+        </nav>
     </header>
 
     <!-- ===== PAGE CONTENT ===== -->
     <div class="container">
+        {% block styles %}
+        {% endblock %}
         {% block content %}
         {% endblock %}
     </div>
