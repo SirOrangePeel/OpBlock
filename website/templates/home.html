@@ -5,26 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>OpBlock</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/colors.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/titles.css') }}">
 <style>
-    :root {
-    --gradient-start: #FF930F;
-    --gradient-end: #FAFAFA;
-
-    --primary-color: #ffc021;
-    --primary-hover: #d0d921;
-
-    --background-dark: #111827;
-    --card-background: #1f2937;
-
-    --text-main-black: #0f172a;
-    --text-main-white: #FAFAFA;
-    --text-muted: #0f172a;
-    --text-footer: #0f172a;
-
-    --button-text-dark: #0f172a;
-
-    --chalk-green: #2fb07c;
-    }
     * {
         margin: 0;
         padding: 0;
@@ -52,7 +35,7 @@
         transition: 0.3s ease;
         font-size: 1.5rem;
         font-weight: 700;
-        color: var(--primary-color);
+        color: var(--gradient-start);
     }
 
     .nav-links a {
@@ -188,7 +171,7 @@
     <a href="#">How It Works</a>
     <a href="#">Request Walk</a>
     <a href="#">Volunteer</a>
-    <a href="#">Login</a>
+    <a href="auth/login">Login</a>
   </div>
 </nav>
 

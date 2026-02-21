@@ -1,21 +1,52 @@
 {% extends "base.html" %}
 {% block title %}Student Request{% endblock %}
 
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/colors.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/titles.css') }}">
+<style>
+.info-card {
+    background: var(--text-main-white);
+    border-radius: 22px;
+    padding: 30px;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+    margin-bottom: 20px;
+    transition: 0.3s ease;
+    color: var(--text-main-black);
+}
+input, select {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #444;    /* Subtle border for inputs */
+    color: var(--text-main-black);               /* White text inside inputs */
+    border-radius: 4px;
+}
+button {
+  background-color: #007bff; /* Standard blue button */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+</style>
+{% endblock %}
+
 {% block content %}
 {% with messages = get_flashed_messages(with_categories=true) %}
-{% if messages %}
-{% for category, message in messages %}
-<div class="flash {{ category }}">
-  {{ message }}
-</div>
-{% endfor %}
-{% endif %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="flash {{ category }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
 {% endwith %}
 
-<h2>Walk Request Form</h2>
+<h1 class="title">Create a Request</h1>
+    <div class="subtitle">Please let us know what you need.</div> 
 
-<div style="display: flex; gap: 40px; align-items: flex-start;">
+<div style="display: flex; gap: 20px; align-items: flex-start;">
   <form method="POST">
+    <div class="info-card">
     <label>Student ID (CCID):</label>
     <input type="text" name="student_id" required><br><br>
     <label>Email:</label>
@@ -24,37 +55,99 @@
     <input type="text" name="first_name" required><br><br>
     <label>Last Name:</label>
     <input type="text" name="last_name" required><br><br>
+
     <label>Start Location:</label>
-    <select name="s_loc">
+    <select name="s_loc" id="s_loc_select" onchange="updateMarker('start', this)">
+      <option value="">-- Select --</option>
       {% for loc in pickup_locations %}
-      <option value="{{ loc.location_id }}">{{ loc.name }}</option>
+      <!-- Store lat/lng on each option as data attributes -->
+      <option value="{{ loc.location_id }}"
+              data-lat="{{ loc.lat }}"
+              data-lng="{{ loc.lng }}">
+        {{ loc.name }}
+      </option>
       {% endfor %}
     </select><br><br>
+
     <label>End Location:</label>
-    <select name="e_loc">
+    <select name="e_loc" id="e_loc_select" onchange="updateMarker('end', this)">
+      <option value="">-- Select --</option>
       {% for loc in all_locations %}
-      <option value="{{ loc.location_id }}">{{ loc.name }}</option>
+      <option value="{{ loc.location_id }}"
+              data-lat="{{ loc.lat }}"
+              data-lng="{{ loc.lng }}">
+        {{ loc.name }}
+      </option>
       {% endfor %}
     </select><br><br>
+    </div>
     <button type="submit">Submit Request</button>
   </form>
 
   <div id="map" style="width:600px; height:450px;"></div>
+</div>
 
-  <script>
-    function initMap() {
-      new google.maps.Map(document.getElementById("map"), {
-        center: { lat: 53.5461, lng: -113.4938 },
-        zoom: 12,
-        disableDefaultUI: true,       // removes all controls
-        gestureHandling: "greedy",    // allows normal scroll/drag
-        keyboardShortcuts: false
+<script>
+  let map;
+  let markers = { start: null, end: null };
+
+  function initMap() {
+    map = new google.maps.Map(document.getElementById("map"), {
+      center: { lat: 53.5461, lng: -113.4938 },
+      zoom: 14,
+      disableDefaultUI: true,
+      gestureHandling: "greedy",
+      keyboardShortcuts: false
+    });
+  }
+
+  function updateMarker(type, selectEl) {
+    const selected = selectEl.options[selectEl.selectedIndex];
+    const lat = parseFloat(selected.dataset.lat);
+    const lng = parseFloat(selected.dataset.lng);
+
+    // If no valid coords (e.g. the blank "-- Select --" option), remove marker
+    if (isNaN(lat) || isNaN(lng)) {
+      if (markers[type]) {
+        markers[type].setMap(null);
+        markers[type] = null;
+      }
+      return;
+    }
+
+    const position = { lat, lng };
+    const label = type === "start" ? "A" : "B";
+    const color = type === "start" ? "green" : "red";
+
+    if (markers[type]) {
+      // Move existing marker
+      markers[type].setPosition(position);
+    } else {
+      // Create new marker
+      markers[type] = new google.maps.Marker({
+        position,
+        map,
+        label,
+        title: selected.text,
+        icon: `http://maps.google.com/mapfiles/ms/icons/${color}-dot.png`
       });
     }
-  </script>
 
-  <script src="https://maps.googleapis.com/maps/api/js?key={{ maps_key }}&callback=initMap" async defer>
-  </script>
-</div>
+    // Pan/zoom map to fit both markers if both are set, otherwise just pan
+    const activeMarkers = Object.values(markers).filter(Boolean);
+    if (activeMarkers.length === 2) {
+      const bounds = new google.maps.LatLngBounds();
+      activeMarkers.forEach(m => bounds.extend(m.getPosition()));
+      map.fitBounds(bounds);
+    } else {
+      map.panTo(position);
+    }
+  }
+</script>
+
+<script
+  src="https://maps.googleapis.com/maps/api/js?key={{ maps_key }}&callback=initMap"
+  async defer>
+</script>
 
 {% endblock %}

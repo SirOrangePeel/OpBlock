@@ -1,34 +1,18 @@
-Century Park Station
-Stadium Station
-Coliseum Station
-Belvedere Station
-Clareview Station
-Quarters Stop
-Muttart Stop
-Strathearn Stop
-Holyrood Stop
-Bonnie Doon Stop
-Avonmore Stop
-Davies Station
-Millbourne/Woodvale Stop
-Grey Nuns Stop
-Mill Woods Stop
-MacEwan Station
-Kingsway/Royal Alex
-NAIT Blatchford Market Station
-Century Park
-Kingsway
-Stadium
-Coliseum
-Belvedere
-Clareview
-NAIT / Blatchford
-Muttart
-Strathearn
-Holyrood
-Bonnie Doon
-Avonmore
-Davies
-Millbourne / Woodvale
-Grey Nuns
-Mill Woods
+Century Park Station,53.457296,-113.516370
+Stadium Station,53.559945,-113.470673
+Coliseum Station,53.570601,-113.458279
+Belvedere Station,53.588294,-113.432865
+Clareview Station,53.601844,-113.411472
+Quarters Stop,53.544513,-113.483422
+Muttart Stop,53.536423,-113.479449
+Strathearn Stop,53.531697,-113.462875
+Holyrood Stop,53.527735,-113.457375
+Bonnie Doon Stop,53.519454,-113.455420
+Avonmore Stop,53.509343,-113.455094
+Davies Station,53.499874,-113.444118
+Millbourne/Woodvale Stop,53.474916,-113.438941
+Grey Nuns Stop,53.462772,-113.434596
+Mill Woods Stop,53.458433,-113.430229
+MacEwan Station,53.547738,-113.49872213
+Kingsway/Royal Alex,53.557753,-113.501088
+NAIT Blatchford Market Station,53.567000,-113.509251

@@ -1,0 +1,17 @@
+.format {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.title  {
+    color: var(--text-main-white);
+    font-size: 2.2rem;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+.subtitle {
+    font-size: 1.2rem;
+    color: #6b7280;
+    margin-bottom: 30px;
+}
