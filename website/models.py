@@ -53,8 +53,9 @@ class Active(db.Model):
     date = db.Column(db.DateTime(timezone=True), default=func.now()) #func just returns the current datetime
     walk_id = db.Column(db.Integer, db.ForeignKey('walk.id'))
     status = db.Column(db.String(25))
-    walker = db.Column(db.Integer, db.ForeignKey('walker.id'), nullable=True)
+    walker_id = db.Column(db.Integer, db.ForeignKey('walker.id'), nullable=True)
     walk = db.relationship("Walk", backref="active_entries")
+    walker = db.relationship("Walker", backref="active_entries")
 
 class History(db.Model): 
     id = db.Column(db.Integer, primary_key=True)

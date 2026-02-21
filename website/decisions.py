@@ -14,7 +14,7 @@ def complete_walk_success(active_id, walker_id):
     new_history = History(
         walk_id=active.walk_id,
         success=True,
-        walker=walker_id
+        walker_id=walker_id
     )
 
     db.session.delete(active)
@@ -31,7 +31,7 @@ def complete_walk_failure(active_id, walker_id=None):
     new_history = History(
         walk_id=active.walk_id,
         success=False,
-        walker=walker_id
+        walker_id=walker_id
     )
 
     db.session.delete(active)
