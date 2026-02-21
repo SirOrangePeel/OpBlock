@@ -7,7 +7,7 @@ from .mail import inform_invitation
 decisions = Blueprint('decisions', __name__)
 
 # Complete successful walk
-@views.route("/complete/success/<active_id>/<walker_id>", methods=["GET"])
+@decisions.route("/complete/success/<active_id>/<walker_id>", methods=["GET"])
 def complete_walk_success(active_id, walker_id):
     active = Active.query.filter_by(id=active_id).first_or_404()
 
@@ -24,7 +24,7 @@ def complete_walk_success(active_id, walker_id):
     return redirect(url_for("mail.sendCompleted", recipient=active.email))
 
 # Complete failure walk
-@views.route("/complete/failure/<active_id>/<walker_id>", methods=["GET"])
+@decisions.route("/complete/failure/<active_id>/<walker_id>", methods=["GET"])
 def complete_walk_failure(active_id, walker_id=None):
     active = Active.query.filter_by(id=active_id).first_or_404()
 
@@ -42,7 +42,7 @@ def complete_walk_failure(active_id, walker_id=None):
 
 
 # Invite a walker
-@views.route("/invite/<active_id>/<walker_id>", methods=["GET"])
+@decisions.route("/invite/<active_id>/<walker_id>", methods=["GET"])
 def invite_walker(active_id, walker_id):
     active = Active.query.filter_by(id=active_id).first_or_404()
     active.status = "Invited"
@@ -54,7 +54,7 @@ def invite_walker(active_id, walker_id):
     return redirect(url_for("admin.pending"))
 
 # Walker accept
-@views.route("/accept/<active_id>/<walker_id>", methods=["GET"])
+@decisions.route("/accept/<active_id>/<walker_id>", methods=["GET"])
 def walker_accept(active_id, walker_id):
     active = Active.query.filter_by(id=active_id).first_or_404()
     active.status = "In Progress"
@@ -64,8 +64,8 @@ def walker_accept(active_id, walker_id):
     return redirect(url_for("mail.sendAccepted", recipient=active.email, active_id=active_id))
 
 # Walker reject
-@views.route("/reject/<active_id>/<walker_id>", methods=["GET"])
-def invite_walker(active_id, walker_id):
+@decisions.route("/reject/<active_id>/<walker_id>", methods=["GET"])
+def walker_reject(active_id, walker_id):
     active = Active.query.filter_by(id=active_id).first_or_404()
     active.status = "Pending"
     db.session.commit()
