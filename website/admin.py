@@ -55,17 +55,45 @@ def create_walker():
 @login_required
 def pending():
 
-    pending_walks = Active.query.filter_by(status="Pending").all()
-
-    return render_template("pending.html", pending_walks=pending_walks)
-
-@admin.route("/pending-data")
-@login_required
-def pending_data():
     pending_walks = (
         Active.query
         .options(joinedload(Active.walk))
         .filter_by(status="Pending")
         .all()
     )
-    return render_template("partials/pending_list.html", pending_walks=pending_walks)
+
+    available_walkers = Walker.query.filter_by(status="Available").all()
+
+    return render_template(
+        "pending.html",
+        pending_walks=pending_walks,
+        available_walkers=available_walkers
+    )
+
+
+@admin.route("/pending-data")
+@login_required
+def pending_data():
+
+    pending_walks = (
+        Active.query
+        .options(joinedload(Active.walk))
+        .filter_by(status="Pending")
+        .all()
+    )
+
+    assigned_walker_ids = db.session.query(Active.walker_id)\
+        .filter(Active.walker_id.isnot(None))\
+        .subquery()
+
+    available_walkers = Walker.query\
+        .filter(~Walker.id.in_(assigned_walker_ids))\
+        .all()
+        
+    print("Assigned IDs:", db.session.query(Active.walker_id).all())
+    
+    return render_template(
+        "partials/pending_list.html",
+        pending_walks=pending_walks,
+        available_walkers=available_walkers
+    )

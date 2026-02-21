@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
-from .models import Walk, Active, History
+from .models import Walk, Active, History, Walker
 from . import db
 from .mail import inform_invitation
 
@@ -42,13 +42,25 @@ def complete_walk_failure(active_id, walker_id=None):
 
 
 # Invite a walker
-@decisions.route("/invite/<active_id>/<walker_id>", methods=["GET"])
-def invite_walker(active_id, walker_id):
+@decisions.route("/invite/<int:active_id>", methods=["POST"])
+@login_required
+def invite_walker(active_id):
+
+    walker_id = request.form.get("walker_id")
+
     active = Active.query.filter_by(id=active_id).first_or_404()
+    walker = Walker.query.filter_by(id=walker_id).first_or_404()
+
+    if active.walker_id is not None:
+        return redirect(url_for("admin.pending"))
+
+    # Assign walker
+    active.walker = walker
     active.status = "Invited"
+
     db.session.commit()
 
-    walker = Walker.query.filter_by(id=active_id).first_or_404()
+    # Send invitation email
     inform_invitation(walker, active_id)
 
     return redirect(url_for("admin.pending"))

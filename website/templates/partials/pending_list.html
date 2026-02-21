@@ -19,6 +19,24 @@
             <p><strong>Status:</strong> {{ active.status }}</p>
             <p><strong>Created:</strong> {{ active.date }}</p>
 
+            {% if available_walkers %}
+                <form method="POST"
+                      action="{{ url_for('decisions.invite_walker', active_id=active.id) }}">
+
+                    <select name="walker_id" required>
+                        {% for walker in available_walkers %}
+                            <option value="{{ walker.id }}">
+                                {{ walker.f_name }} {{ walker.l_name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+
+                    <button type="submit">Assign Walker</button>
+                </form>
+            {% else %}
+                <p><em>No available walkers.</em></p>
+            {% endif %}
+
         </div>
     {% endfor %}
 
