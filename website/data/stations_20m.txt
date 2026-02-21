@@ -1,7 +1,7 @@
-University Station
-Health Sciences Station
-McKernan Belgravia Station
-South Campus Station
-Government Centre
-Southgate Station
-Churchill Station
+University Station,53.524966,-113.523743
+Health Sciences Station,53.520458,-113.525877
+McKernan Belgravia Station,53.513227,-113.526168
+South Campus Station,53.502834,-113.528450
+Government Centre,53.535812,-113.503963
+Southgate Station,53.485756,-113.516788
+Churchill Station,53.545034,-113.489222

@@ -1,7 +1,7 @@
-North Campus - SUB
-North Campus - Tory
-North Campus - ETLC
-North Campus - HUB Mall
-Campus Saint-Jean
-Bay/Enterprise Square station
-Faculty of Extension
+North Campus - SUB,53.524731,-113.526367
+North Campus - Tory,53.528038,-113.520386
+North Campus - ETLC,53.526976,-113.530754
+North Campus - HUB Mall,53.5261,-113.520813
+Campus Saint-Jean,53.5195,-113.4910
+Bay/Enterprise Square Station,53.540986,-113.495143
+Faculty of Extension,53.541090,-113.496909

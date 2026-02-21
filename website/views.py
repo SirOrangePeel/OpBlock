@@ -32,63 +32,47 @@ def request_page():
     pickup_locations = Location.query.filter_by(pickup=True).order_by(Location.name).all()
     all_locations = Location.query.order_by(Location.name).all()
 
-    previous_s_loc = request.form.get("s_loc")
-    previous_e_loc = request.form.get("e_loc")
+    for loc in all_locations:
+        print(loc.location_id, loc.name, loc.lat, loc.lng)
 
-    while True:
+    if request.method == "POST":
+        ccid = request.form.get("student_id")
+        email = request.form.get("email")
+        f_name = request.form.get("first_name")
+        l_name = request.form.get("last_name")
         s_loc = request.form.get("s_loc")
         e_loc = request.form.get("e_loc")
 
-        if previous_s_loc != s_loc:
-            # Get the new value
-            # Put that into the places API
-            # Place a marker on the location
-            pass
-
-        if previous_e_loc != e_loc:
-            # Get the new value
-            # Put that into the places API
-            # Place a marker on the location
-            pass
-
-        if request.method == "POST":
-            ccid = request.form.get("student_id")
-            email = request.form.get("email")
-            f_name = request.form.get("first_name")
-            l_name = request.form.get("last_name")
-            s_loc = request.form.get("s_loc")
-            e_loc = request.form.get("e_loc")
-
-            # Basic validation
-            if not all([ccid, email, f_name, l_name, s_loc, e_loc]):
-                flash("All fields are required.", "error")
-                return render_template(
-                    "request.html",
-                    pickup_locations=pickup_locations,
-                    all_locations=all_locations
-                )
-
-            new_walk = Walk(
-                ccid=ccid,
-                email=email,
-                f_name=f_name,
-                l_name=l_name,
-                s_loc=int(s_loc),
-                e_loc=int(e_loc)
+        # Basic validation
+        if not all([ccid, email, f_name, l_name, s_loc, e_loc]):
+            flash("All fields are required.", "error")
+            return render_template(
+                "request.html",
+                pickup_locations=pickup_locations,
+                all_locations=all_locations
             )
-            db.session.add(new_walk)
-            db.session.flush()  # Get new_walk.id before committing
 
-            new_active = Active(
-                walk_id=new_walk.id,
-                status="Pending"
-            )
-            db.session.add(new_active)
-            db.session.commit()
+        new_walk = Walk(
+            ccid=ccid,
+            email=email,
+            f_name=f_name,
+            l_name=l_name,
+            s_loc=int(s_loc),
+            e_loc=int(e_loc)
+        )
+        db.session.add(new_walk)
+        db.session.flush()  # Get new_walk.id before committing
 
-            flash("Walk request submitted and activated!", "success")
+        new_active = Active(
+            walk_id=new_walk.id,
+            status="Pending"
+        )
+        db.session.add(new_active)
+        db.session.commit()
 
-            return redirect(url_for("mailer.sendPending", recipient=new_walk.email, active_id=new_active.id))
+        flash("Walk request submitted and activated!", "success")
+
+        return redirect(url_for("mailer.sendPending", recipient=new_walk.email, active_id=new_active.id))
 
     return render_template(
         "request.html",
