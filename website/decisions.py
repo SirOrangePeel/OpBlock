@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
-from .models import Walk, Active, History
+from .models import Walk, Active, History, Walker
 from . import db
 from .mail import inform_invitation
 
@@ -10,6 +10,7 @@ decisions = Blueprint('decisions', __name__)
 @decisions.route("/complete/success/<active_id>/<walker_id>", methods=["GET"])
 def complete_walk_success(active_id, walker_id):
     active = Active.query.filter_by(id=active_id).first_or_404()
+    walker = Walker.query.filter_by(id=walker_id).first_or_404()
 
     new_history = History(
         walk_id=active.walk_id,
@@ -17,11 +18,13 @@ def complete_walk_success(active_id, walker_id):
         walker_id=walker_id
     )
 
+    walker.status = "Available"
+
     db.session.delete(active)
     db.session.add(new_history)
     db.session.commit()
 
-    return redirect(url_for("mail.sendCompleted", recipient=active.email))
+    return redirect(url_for("mailer.sendCompleted", recipient=active.walk.email))
 
 # Complete failure walk
 @decisions.route("/complete/failure/<active_id>/<walker_id>", methods=["GET"])
@@ -34,21 +37,36 @@ def complete_walk_failure(active_id, walker_id=None):
         walker_id=walker_id
     )
 
+    if walker_id is not None:
+        walker = Walker.query.filter_by(id=walker_id).first_or_404()
+        walker.status = "Available"
+
     db.session.delete(active)
     db.session.add(new_history)
     db.session.commit()
 
-    return redirect(url_for("mail.sendCompleted", recipient=active.email))
+    return redirect(url_for("mailer.sendCompleted", recipient=active.walk.email))
 
 
 # Invite a walker
-@decisions.route("/invite/<active_id>/<walker_id>", methods=["GET"])
-def invite_walker(active_id, walker_id):
+@decisions.route("/invite/<int:active_id>", methods=["POST"])
+@login_required
+def invite_walker(active_id):
+    walker_id = request.form.get("walker_id")
+
     active = Active.query.filter_by(id=active_id).first_or_404()
+    walker = Walker.query.filter_by(id=walker_id).first_or_404()
+
+    if active.walker_id is not None:
+        return redirect(url_for("admin.pending"))
+
+    # Assign walker
+    active.walker_id = walker.id
     active.status = "Invited"
+
     db.session.commit()
 
-    walker = Walker.query.filter_by(id=active_id).first_or_404()
+    # Send invitation email
     inform_invitation(walker, active_id)
 
     return redirect(url_for("admin.pending"))
@@ -57,11 +75,14 @@ def invite_walker(active_id, walker_id):
 @decisions.route("/accept/<active_id>/<walker_id>", methods=["GET"])
 def walker_accept(active_id, walker_id):
     active = Active.query.filter_by(id=active_id).first_or_404()
+    walker = Walker.query.filter_by(id=walker_id).first_or_404()
     active.status = "In Progress"
-    active.walker = walker_id
+    active.walker_id = walker_id
+    walker.status = "Busy"
+
     db.session.commit()
 
-    return redirect(url_for("mail.sendAccepted", recipient=active.email, active_id=active_id))
+    return redirect(url_for("mailer.sendAccepted", recipient=active.walk.email, active_id=active_id))
 
 # Walker reject
 @decisions.route("/reject/<active_id>/<walker_id>", methods=["GET"])

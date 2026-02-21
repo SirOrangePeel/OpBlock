@@ -11,13 +11,6 @@ db = SQLAlchemy() #Start database object
 mail = Mail() # instantiate the mail class
 DB_NAME = "database.db" #Name of database
 
-
-def env_bool(name: str, default: bool = False) -> bool:
-    v = os.getenv(name)
-    if v is None:
-        return default
-    return v.strip().lower() in ("1", "true", "yes", "y", "on")
-
 def create_app():
     app = Flask(__name__) #Create app
 
@@ -77,54 +70,16 @@ def create_app():
 
 
 def create_database(app):
-    if not path.exists('website/' + DB_NAME):
+    from .seed import seed_db
+
+    if not path.exists('instance/' + DB_NAME):
         with app.app_context():
             db.create_all()
+        seed_db(app)
         print('Created Database!')
 
-    from .models import Location
-
-    with app.app_context():
-        if not Location.query.first() is None:
-            return
-
-        data_folder = "website/data"
-
-        FILE_FLAGS = {
-            "pickup_locations.txt": {"pickup": True,  "dropoff_20_min_dist": False},
-            "stations_20m.txt":      {"pickup": False, "dropoff_20_min_dist": True},
-            "stations_non20m.txt":   {"pickup": False, "dropoff_20_min_dist": False},
-        }
-
-        for file in os.scandir(data_folder):
-
-            if not file.is_file():
-                continue
-
-            print("Seeding:", file.name)
-
-            flags = FILE_FLAGS.get(file.name)
-            if not flags:
-                continue
-
-            with open(file.path, "r") as f:
-                for line in f:
-                    line = line.strip()
-                    if not line:
-                        continue
-                    parts = line.split(",")
-                    if len(parts) != 3:
-                        print("Skipping bad line:", line)
-                        continue
-                    name, lat, lng = parts
-                    location = Location(
-                        name=name.strip(),
-                        lat=float(lat.strip()),
-                        lng=float(lng.strip()),
-                        pickup=flags["pickup"],
-                        dropoff_20_min_dist=flags["dropoff_20_min_dist"]
-                    )
-                    db.session.add(location)
-
-        db.session.commit()
-        print("Seeded location data.")
+def env_bool(name: str, default: bool = False) -> bool:
+    v = os.getenv(name)
+    if v is None:
+        return default
+    return v.strip().lower() in ("1", "true", "yes", "y", "on")
