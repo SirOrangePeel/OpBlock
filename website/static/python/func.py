@@ -42,3 +42,11 @@ def parse_schedule_walker(sched):
     else:
         soonest = None
     return(soonest)
+
+def walker_available(sched):
+    soonest = parse_schedule_walker(sched)
+    currentDate = datetime.today()
+    if currentDate >= soonest[0]:
+        if currentDate < soonest[1]:
+            return(True)
+    return(False)
