@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Walk{% endblock %}
+
+{% block content %}
+
+<a class="btn" href="{{ url_for('views.home') }}">Back to Home</a>
+
+
+<h2>Walk</h2>
+
+<div id="walk-container">
+    {{ walk.f_name }}
+</div>
+
+{% endblock %}
