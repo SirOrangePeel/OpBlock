@@ -49,12 +49,14 @@ def create_app():
     from .auth import auth
     from .mail import mailer
     from .admin import admin
+    from .decisions import decisions
 
     #Register the correct prefixes
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(mailer, url_prefix='/')
     app.register_blueprint(admin, url_prefix='/admin')
+    app.register_blueprint(decisions, url_prefix='/')
 
     #Import the database model schemas
     from .models import Admin, Walk, Walker, Recurring, Active, History

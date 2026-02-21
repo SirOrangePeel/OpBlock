@@ -59,8 +59,8 @@ class History(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.DateTime(timezone=True), default=func.now()) #func just returns the current datetime
     walk_id = db.Column(db.Integer, db.ForeignKey('walk.id'))
-    completes = db.Column(db.Boolean)
-    walker = db.Column(db.Integer, db.ForeignKey('walker.id'))
+    success = db.Column(db.Boolean)
+    walker = db.Column(db.Integer, db.ForeignKey('walker.id'), nullable=True)
 
 class Locations(db.Model):
     location_id = db.Column(db.Integer, primary_key=True)
