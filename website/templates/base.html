@@ -6,16 +6,33 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/colors.css') }}">
     <style>
         * {
-            margin: 10;
-            padding: 10;
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
             font-family: 'Inter', sans-serif;
         }
+
+        html {
+            height: 100%;
+        }
+
         body {
-            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
-            color: var(--text-main-black);
+            min-height: 100vh;   /* always at least full viewport */
+            display: flex;
+            flex-direction: column;
+
+            background: linear-gradient(
+                180deg,
+                var(--gradient-start),
+                var(--gradient-end)
+            );
+
+            background-repeat: no-repeat;
+            background-attachment: fixed; /* prevents cut when zooming */
+
             color: var(--text-main-white);
         }
+        
         nav {
             display: flex;
             justify-content: space-between;
@@ -30,18 +47,20 @@
                 transition: 0.3s ease;
                 font-size: 1.5rem;
                 font-weight: 700;
-                color: var(--primary-color);
+                color: var(--gradient-start);
                 text-decoration: none;
         }
         .container {
-            background: var(--card-background); 
-            max-width: 900px;   /* limits width */
+            flex: 1; /* THIS pushes footer down */
+
+            background: var(--card-background);
+            max-width: 900px;
             width: 100%;
 
-            margin: 60px auto;  /* centers it horizontally */
+            margin: 60px auto;
             padding: 60px 40px;
 
-            border-radius: 20px; /* optional but looks clean */
+            border-radius: 20px;
         }
         .nav-links a {
             margin-left: 20px;
@@ -53,6 +72,14 @@
 
         .nav-links a:hover {
             color: var(--text-main-white);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            background-color: var(--card-background);
+            color: var(--text-main-white);
+            font-size: 0.9rem;
         }
                 
     </style>
@@ -89,7 +116,7 @@
                 <a href="#">How It Works</a>
                 <a href="#">Request Walk</a>
                 <a href="#">Volunteer</a>
-                <a href="#">Login</a>
+                <a href="auth/login">Login</a>
             </div>
         </nav>
     </header>

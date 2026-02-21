@@ -52,7 +52,7 @@ def create_app():
 
     #Register the correct prefixes
     app.register_blueprint(views, url_prefix='/')
-    app.register_blueprint(auth, url_prefix='/')
+    app.register_blueprint(auth, url_prefix='/auth')
     app.register_blueprint(mailer, url_prefix='/')
     app.register_blueprint(admin, url_prefix='/admin')
     app.register_blueprint(decisions, url_prefix='/')

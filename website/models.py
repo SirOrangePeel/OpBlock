@@ -35,6 +35,7 @@ class Recurring(db.Model):
     schedule = db.Column(db.String(1000))
     walk_id = db.Column(db.Integer, db.ForeignKey('walk.id'))
     active = db.Column(db.Boolean)
+    one_time = db.Column(db.Boolean)
 
 class Active(db.Model): 
     id = db.Column(db.Integer, primary_key=True)
