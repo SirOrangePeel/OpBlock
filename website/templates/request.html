@@ -1,17 +1,18 @@
 {% extends "base.html" %}
-
 {% block title %}Student Request{% endblock %}
 
+{% block content %}
 {% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-    {% for category, message in messages %}
-      <div class="flash {{ category }}">
-        {{ message }}
-      </div>
-    {% endfor %}
-  {% endif %}
+{% if messages %}
+{% for category, message in messages %}
+<div class="flash {{ category }}">
+  {{ message }}
+</div>
+{% endfor %}
+{% endif %}
 {% endwith %}
 
+<<<<<<< HEAD
 {% block styles %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/colors.css') }}">
 <style>
@@ -70,17 +71,21 @@
 <form method="POST">
   <div class="inputs personal-info">
     <h3>Personal Information</h3> 
+=======
+<h2>Walk Request Form</h2>
+
+<div style="display: flex; gap: 40px; align-items: flex-start;">
+  <form method="POST">
+>>>>>>> 74a60947a7161d0cc2ff3bea2e19c513a1992b5c
     <label>Student ID (CCID):</label>
     <input type="text" name="student_id" required><br><br>
-
     <label>Email:</label>
     <input type="email" name="email" required><br><br>
-
     <label>First Name:</label>
     <input type="text" name="first_name" required><br><br>
-
     <label>Last Name:</label>
     <input type="text" name="last_name" required><br><br>
+<<<<<<< HEAD
   </div>
 
   <div class="inputs start-location">
@@ -102,7 +107,39 @@
   </div>
 
   <button type="submit">Submit Request</button>
+=======
+    <label>Start Location:</label>
+    <select name="s_loc">
+      {% for loc in pickup_locations %}
+      <option value="{{ loc.location_id }}">{{ loc.name }}</option>
+      {% endfor %}
+    </select><br><br>
+    <label>End Location:</label>
+    <select name="e_loc">
+      {% for loc in all_locations %}
+      <option value="{{ loc.location_id }}">{{ loc.name }}</option>
+      {% endfor %}
+    </select><br><br>
+    <button type="submit">Submit Request</button>
+  </form>
+>>>>>>> 74a60947a7161d0cc2ff3bea2e19c513a1992b5c
 
-</form>
+  <div id="map" style="width:600px; height:450px;"></div>
+
+  <script>
+    function initMap() {
+      new google.maps.Map(document.getElementById("map"), {
+        center: { lat: 53.5461, lng: -113.4938 },
+        zoom: 12,
+        disableDefaultUI: true,       // removes all controls
+        gestureHandling: "greedy",    // allows normal scroll/drag
+        keyboardShortcuts: false
+      });
+    }
+  </script>
+
+  <script src="https://maps.googleapis.com/maps/api/js?key={{ maps_key }}&callback=initMap" async defer>
+  </script>
+</div>
 
 {% endblock %}
