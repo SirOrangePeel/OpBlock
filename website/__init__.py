@@ -23,7 +23,7 @@ def create_app():
 
     app.config['SECRET_KEY'] = os.getenv("FLASK_SECRET_KEY")  #Secret key.
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}' #Location of the database. IE the same folder as parent 
-    app.config["MAPS_KEY"] = os.getenv("MAP_KEY") #Maps API key
+    app.config["MAPS_KEY"] = os.getenv("MAPS_KEY") #Maps API key
 
     # configuration of mail
     app.config['MAIL_SERVER'] = os.getenv("MAIL_SERVER") #Server to use
@@ -52,7 +52,7 @@ def create_app():
 
     #Register the correct prefixes
     app.register_blueprint(views, url_prefix='/')
-    app.register_blueprint(auth, url_prefix='/')
+    app.register_blueprint(auth, url_prefix='/auth')
     app.register_blueprint(mailer, url_prefix='/')
     app.register_blueprint(admin, url_prefix='/admin')
     app.register_blueprint(decisions, url_prefix='/')
