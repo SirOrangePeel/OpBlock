@@ -23,7 +23,7 @@ def create_app():
 
     app.config['SECRET_KEY'] = os.getenv("FLASK_SECRET_KEY")  #Secret key.
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}' #Location of the database. IE the same folder as parent 
-    app.config["MAPS_KEY"] = os.getenv("MAPS_API_KEY") #Maps API key
+    app.config["MAPS_KEY"] = os.getenv("MAP_KEY") #Maps API key
 
     # configuration of mail
     app.config['MAIL_SERVER'] = os.getenv("MAIL_SERVER") #Server to use
