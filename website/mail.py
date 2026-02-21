@@ -1,26 +1,15 @@
-from flask import Flask, Blueprint, redirect, url_for
+from flask import Flask, Blueprint, redirect, url_for, current_app
 from flask_mail import Message
 from . import db, mail
 from .models import Active, Walk
 import os 
+import threading
 
 mailer = Blueprint('mailer', __name__) #Create the blueprint
 
-def send_email(subject, recipients, body):
-    msg = Message(
-        subject=subject,
-        recipients=recipients,
-        body=body
-    )
-    mail.send(msg)
-
-def send_email_html(subject, recipients, html):
-    msg = Message(
-        subject=subject,
-        recipients=recipients,
-        html=html
-    )
-    mail.send(msg)
+def send_async_email(app, msg):
+    with app.app_context():
+        mail.send(msg)
 
 def inform_pending(recipient, active_id):
     url = url_for("views.view_walk", active_id=active_id, _external=True)
@@ -84,7 +73,17 @@ def inform_pending(recipient, active_id):
                 </body>
                 </html>
                 """
-    send_email_html(subject, recipients, message)
+
+    msg = Message(
+        subject=subject,
+        recipients=recipients,
+        html=message
+    )
+    
+    threading.Thread(
+        target=send_async_email,
+        args=(current_app._get_current_object(), msg)
+    ).start()
 
 def inform_invitation(walker, active_id):
     url1 = url_for("decisions.walker_accept", active_id=active_id, walker_id=walker.id, _external=True) 
@@ -140,7 +139,17 @@ def inform_invitation(walker, active_id):
                 </body>
                 </html>
                 """
-    send_email_html(subject, recipients, message)
+
+    msg = Message(
+        subject=subject,
+        recipients=recipients,
+        html=message
+    )
+
+    threading.Thread(
+        target=send_async_email,
+        args=(current_app._get_current_object(), msg)
+    ).start()
 
 def inform_accepted(recipient, active_id):
     url = url_for("views.view_walk", active_id=active_id, _external=True)
@@ -204,7 +213,17 @@ def inform_accepted(recipient, active_id):
                 </body>
                 </html>
                 """
-    send_email_html(subject, recipients, message)
+    
+    msg = Message(
+        subject=subject,
+        recipients=recipients,
+        html=message
+    )
+
+    threading.Thread(
+        target=send_async_email,
+        args=(current_app._get_current_object(), msg)
+    ).start()
 
 def inform_completed(recipient):
     recipients = [recipient]
@@ -245,7 +264,16 @@ def inform_completed(recipient):
                 </body>
                 </html>
                 """
-    send_email_html(subject, recipients, message)
+    msg = Message(
+        subject=subject,
+        recipients=recipients,
+        html=message
+    )
+
+    threading.Thread(
+        target=send_async_email,
+        args=(current_app._get_current_object(), msg)
+    ).start()
 
 
 @mailer.route("/inform/pending/<recipient>/<active_id>", methods=['GET', 'POST']) 
