@@ -19,6 +19,7 @@ class Walker(db.Model):
     f_name = db.Column(db.String(25))
     l_name = db.Column(db.String(25))
     status = db.Column(db.String(25))
+    avail = db.Column(db.Boolean)
     schedule = db.Column(db.String(1000))
 
     past_walks = db.relationship("History", backref=db.backref("history", remote_side=[id]), lazy=True)

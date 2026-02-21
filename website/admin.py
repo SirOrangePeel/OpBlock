@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, flash
 from flask_login import login_required, current_user
 from .models import Walker, Active
+from .static.python.func import walker_available
 from sqlalchemy.orm import joinedload
 from . import db
 
@@ -62,7 +63,12 @@ def pending():
         .all()
     )
 
-    available_walkers = Walker.query.filter_by(status="Available").all()
+    walkers = Walker.query.all()
+    for walker in walkers:
+        walker.avail = walker_available(walker.schedule)
+    db.session.commit()
+
+    available_walkers = Walker.query.filter_by(avail=True, status="Available").all()
 
     return render_template(
         "pending.html",

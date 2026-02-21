@@ -1,6 +1,5 @@
 from datetime import datetime, date, time
 
-
 def parse_schedule_recurring_soonest(sched):
     if sched[:1] == "D":
         sep = sched.split(";")

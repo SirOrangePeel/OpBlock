@@ -46,7 +46,16 @@ def seed_db(app):
             schedule="01700-2359;11700-2359;21700-2359;31700-2359;41700-2359;51700-2359;61700-2359"
         )
 
-        db.session.add_all([walker1, walker2, walker3])
+        walker4 = Walker(
+            ccid="srclose",
+            email="seth@sethclose.au",
+            f_name="Seth",
+            l_name="Close",
+            status="Available",
+            schedule="00900-1700;10900-1700;20900-1700;30900-1700;40900-1700;50900-1700;60900-1700"
+        )
+
+        db.session.add_all([walker1, walker2, walker3, walker4])
 
         # -----------------------
         # Create Walk Request
