@@ -86,10 +86,10 @@ def inform_pending(recipient, active_id):
                 """
     send_email_html(subject, recipients, message)
 
-def inform_invitation(recipient, active_id):
-    #TODO CHANGE THIS TO ACCEPT FUNCTION
-    url = url_for("views.view_walk", active_id=active_id, _external=True) 
-    recipients = [recipient]
+def inform_invitation(walker, active_id):
+    url1 = url_for("decisions.walker_accept", active_id=active_id, walker_id=walker.id, _external=True) 
+    url2 = url_for("decisions.walker_reject", active_id=active_id, walker_id=walker.id, _external=True) 
+    recipients = [walker.email]
     subject = "Walk Invitation!"
     message = f"""
                 <!doctype html>
@@ -113,29 +113,20 @@ def inform_invitation(recipient, active_id):
                                 <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 18px 0;">
                                 <tr>
                                     <td bgcolor="#2563eb" style="border-radius:10px;">
-                                    <a href="{url}"
+                                    <a href="{url1}"
                                         style="display:inline-block; padding:12px 18px; font-size:14px; color:#ffffff; text-decoration:none; font-weight:600;">
-                                        Open walk
+                                        Accept
+                                    </a>
+                                    </td>
+                                    <td bgcolor="#2563eb" style="border-radius:10px;">
+                                    <a href="{url2}"
+                                        style="display:inline-block; padding:12px 18px; font-size:14px; color:#ffffff; text-decoration:none; font-weight:600;">
+                                        Reject
                                     </a>
                                     </td>
                                 </tr>
                                 </table>
 
-                                <p style="margin:0 0 10px 0; font-size:12px; line-height:1.6; color:#6b7280;">
-                                If the button does not work, copy and paste this link into your browser:
-                                </p>
-
-                                <p style="margin:0 0 22px 0; font-size:12px; line-height:1.6;">
-                                <a href="{url}" style="color:#2563eb; text-decoration:underline; word-break:break-all;">
-                                    {url}
-                                </a>
-                                </p>
-
-                                <hr style="border:none; border-top:1px solid #e5e7eb; margin:0 0 14px 0;">
-
-                                <p style="margin:0; font-size:12px; line-height:1.6; color:#9ca3af;">
-                                If you did not request this email, you can ignore it.
-                                </p>
                             </td>
                             </tr>
                         </table>
@@ -260,11 +251,6 @@ def inform_completed(recipient):
 @mailer.route("/inform/pending/<recipient>/<active_id>", methods=['GET', 'POST']) 
 def sendPending(recipient, active_id):
     inform_pending(recipient, active_id)
-    return redirect(url_for("views.view_walk", active_id=active_id))
-
-@mailer.route("/inform/invitation/<recipient>/<active_id>", methods=['GET', 'POST']) 
-def sendInvitation(recipient, active_id):
-    inform_invitation(recipient, active_id)
     return redirect(url_for("views.view_walk", active_id=active_id))
 
 @mailer.route("/inform/accepted/<recipient>/<active_id>", methods=['GET', 'POST']) 
