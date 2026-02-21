@@ -3,3 +3,4 @@ flask_mail
 Flask-SQLAlchemy
 flask-login
 dotenv
+google-maps-places
