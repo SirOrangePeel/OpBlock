@@ -1,7 +1,7 @@
 {% extends "base.html" %}
-
 {% block title %}Student Request{% endblock %}
 
+{% block content %}
 {% with messages = get_flashed_messages(with_categories=true) %}
 {% if messages %}
 {% for category, message in messages %}
@@ -12,39 +12,49 @@
 {% endif %}
 {% endwith %}
 
-{% block content %}
 <h2>Walk Request Form</h2>
 
-<form method="POST">
+<div style="display: flex; gap: 40px; align-items: flex-start;">
+  <form method="POST">
+    <label>Student ID (CCID):</label>
+    <input type="text" name="student_id" required><br><br>
+    <label>Email:</label>
+    <input type="email" name="email" required><br><br>
+    <label>First Name:</label>
+    <input type="text" name="first_name" required><br><br>
+    <label>Last Name:</label>
+    <input type="text" name="last_name" required><br><br>
+    <label>Start Location:</label>
+    <select name="s_loc">
+      {% for loc in pickup_locations %}
+      <option value="{{ loc.location_id }}">{{ loc.name }}</option>
+      {% endfor %}
+    </select><br><br>
+    <label>End Location:</label>
+    <select name="e_loc">
+      {% for loc in all_locations %}
+      <option value="{{ loc.location_id }}">{{ loc.name }}</option>
+      {% endfor %}
+    </select><br><br>
+    <button type="submit">Submit Request</button>
+  </form>
 
-  <label>Student ID (CCID):</label>
-  <input type="text" name="student_id" required><br><br>
+  <div id="map" style="width:600px; height:450px;"></div>
 
-  <label>Email:</label>
-  <input type="email" name="email" required><br><br>
+  <script>
+    function initMap() {
+      new google.maps.Map(document.getElementById("map"), {
+        center: { lat: 53.5461, lng: -113.4938 },
+        zoom: 12,
+        disableDefaultUI: true,       // removes all controls
+        gestureHandling: "greedy",    // allows normal scroll/drag
+        keyboardShortcuts: false
+      });
+    }
+  </script>
 
-  <label>First Name:</label>
-  <input type="text" name="first_name" required><br><br>
-
-  <label>Last Name:</label>
-  <input type="text" name="last_name" required><br><br>
-
-  <label>Start Location:</label>
-  <select name=locations method="GET" action="/">
-    {% for location in locations %}
-    <option value="{{location}}" SELECTED>{{locations}}</option>"
-    {% endfor %}
-  </select>
-
-  <h3>End Location</h3>
-  <label>Latitude:</label>
-  <input type="number" step="0.000001" name="lat_end" required><br>
-
-  <label>Longitude:</label>
-  <input type="number" step="0.000001" name="lon_end" required><br><br>
-
-  <button type="submit">Submit Request</button>
-
-</form>
+  <script src="https://maps.googleapis.com/maps/api/js?key={{ maps_key }}&callback=initMap" async defer>
+  </script>
+</div>
 
 {% endblock %}
