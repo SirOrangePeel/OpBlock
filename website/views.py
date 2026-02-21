@@ -7,7 +7,6 @@ import json
 import re
 from dotenv import load_dotenv 
 import os 
-load_dotenv() # Load variables from .env to environment
 
 views = Blueprint('views', __name__)
 
