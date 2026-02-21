@@ -64,7 +64,13 @@ def request_page():
         db.session.commit()
 
         flash("Walk request submitted and activated!", "success")
-        return redirect(url_for("views.request_page"))
+
+        return redirect(url_for("mailer.sendPending", recipient=new_walk.email, active_id=new_active.id))
 
     return render_template("request.html")
+
+@views.route("/<int:active_id>", methods=["GET", "POST"])
+def view_walk(active_id):
+    active = Active.query.filter_by(id=active_id).first_or_404()
+    return render_template("walk.html", walk=active.walk)
 

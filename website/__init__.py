@@ -34,13 +34,14 @@ def create_app():
     app.config["MAIL_USE_TLS"] = env_bool("MAIL_USE_TLS", True)
     app.config["MAIL_USE_SSL"] = env_bool("MAIL_USE_SSL", False)
     app.config["MAIL_DEFAULT_SENDER"] = os.getenv("MAIL_DEFAULT_SENDER", app.config["MAIL_USERNAME"])
-    mail.init_app(app)
+    
 
     if not app.config['SECRET_KEY']:
         raise ValueError("SECRET_KEY not set")
-    if not app.config['MAPS_KEY']:
-        raise ValueError("MAPS_KEY not set")
+    if not app.config['API_KEY']:
+        raise ValueError("API_KEY not set")
 
+    mail.init_app(app)
     db.init_app(app) #Connect the database to the app
 
     #Import the blueprints for views and auth
