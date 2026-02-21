@@ -39,22 +39,9 @@
     <button type="submit">Submit Request</button>
   </form>
 
-  <div id="map" style="width:600px; height:450px;"></div>
-
-  <script>
-    function initMap() {
-      new google.maps.Map(document.getElementById("map"), {
-        center: { lat: 53.5461, lng: -113.4938 },
-        zoom: 12,
-        disableDefaultUI: true,       // removes all controls
-        gestureHandling: "greedy",    // allows normal scroll/drag
-        keyboardShortcuts: false
-      });
-    }
-  </script>
-
-  <script src="https://maps.googleapis.com/maps/api/js?key={{ maps_key }}&callback=initMap" async defer>
-  </script>
+  <iframe width="600" height="450" style="border:0" loading="lazy" allowfullscreen
+    src="https://www.google.com/maps/embed/v1/place?key={{ maps_key }}&q=Edmonton,Alberta&zoom=12">
+  </iframe>
 </div>
 
 {% endblock %}
