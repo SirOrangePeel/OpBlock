@@ -6,19 +6,11 @@ from sqlalchemy.sql import func
 class Walk(db.Model): # Database schema for Notes
     id = db.Column(db.Integer, primary_key=True)
     ccid = db.Column(db.String(25))
-    email = db.Column(db.String(150), unique=False)
+    email = db.Column(db.String(150))
     f_name = db.Column(db.String(25))
     l_name = db.Column(db.String(25))
     s_loc = db.Column(db.Integer, db.ForeignKey('location.location_id'))
     e_loc = db.Column(db.Integer, db.ForeignKey('location.location_id'))
-
-    @property
-    def coordinates(self):
-        return (self.e_loc_lat, self.e_loc_lng)
-
-    @coordinates.setter
-    def coordinates(self, value):
-        self.e_loc_lat, self.e_loc_lng = value
 
 class Walker(db.Model): 
     id = db.Column(db.Integer, primary_key=True)
@@ -49,16 +41,16 @@ class Active(db.Model):
     date = db.Column(db.DateTime(timezone=True), default=func.now()) #func just returns the current datetime
     walk_id = db.Column(db.Integer, db.ForeignKey('walk.id'))
     status = db.Column(db.String(25))
-    
+    walker_id = db.Column(db.Integer, db.ForeignKey('walker.id'), nullable=True)
     walk = db.relationship("Walk", backref="active_entries")
-    
+    walker = db.relationship("Walker", backref="active_entries")
 
 class History(db.Model): 
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.DateTime(timezone=True), default=func.now()) #func just returns the current datetime
     walk_id = db.Column(db.Integer, db.ForeignKey('walk.id'))
-    completes = active = db.Column(db.Boolean)
-    walker = db.Column(db.Integer, db.ForeignKey('walker.id'))
+    success = db.Column(db.Boolean)
+    walker = db.Column(db.Integer, db.ForeignKey('walker.id'), nullable=True)
 
 class Location(db.Model):
     location_id = db.Column(db.Integer, primary_key=True)

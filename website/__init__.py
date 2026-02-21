@@ -23,7 +23,7 @@ def create_app():
 
     app.config['SECRET_KEY'] = os.getenv("FLASK_SECRET_KEY")  #Secret key.
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}' #Location of the database. IE the same folder as parent 
-    app.config["MAPS_KEY"] = os.getenv("MAP_KEY") #Maps API key
+    app.config["MAPS_KEY"] = os.getenv("MAPS_KEY") #Maps API key
 
     # configuration of mail
     app.config['MAIL_SERVER'] = os.getenv("MAIL_SERVER") #Server to use
@@ -33,13 +33,14 @@ def create_app():
     app.config["MAIL_USE_TLS"] = env_bool("MAIL_USE_TLS", True)
     app.config["MAIL_USE_SSL"] = env_bool("MAIL_USE_SSL", False)
     app.config["MAIL_DEFAULT_SENDER"] = os.getenv("MAIL_DEFAULT_SENDER", app.config["MAIL_USERNAME"])
-    mail.init_app(app)
+    
 
     if not app.config['SECRET_KEY']:
         raise ValueError("SECRET_KEY not set")
     if not app.config['MAPS_KEY']:
-        raise ValueError("API_KEY not set")
+        raise ValueError("MAPS_KEY not set")
 
+    mail.init_app(app)
     db.init_app(app) #Connect the database to the app
 
     #Import the blueprints for views and auth
@@ -47,12 +48,14 @@ def create_app():
     from .auth import auth
     from .mail import mailer
     from .admin import admin
+    from .decisions import decisions
 
     #Register the correct prefixes
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(mailer, url_prefix='/')
     app.register_blueprint(admin, url_prefix='/admin')
+    app.register_blueprint(decisions, url_prefix='/')
 
     #Import the database model schemas
     from .models import Admin, Walk, Walker, Recurring, Active, History, Location
