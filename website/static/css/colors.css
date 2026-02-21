@@ -1,0 +1,20 @@
+:root {
+    --gradient-start: #FF930F;
+    --gradient-end: #FAFAFA;
+
+    --primary-color: #ffc021;
+    --primary-hover: #d0d921;
+
+    --background-dark: #111827;
+    --card-background: #1f2937;
+    --card-background-light: #fff5f5;
+
+    --text-main-black: #0f172a;
+    --text-main-white: #FAFAFA;
+    --text-muted: #0f172a;
+    --text-footer: #0f172a;
+
+    --button-text-dark: #0f172a;
+
+    --chalk-green: #2fb07c;
+    }
