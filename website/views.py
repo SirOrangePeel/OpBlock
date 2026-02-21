@@ -32,6 +32,9 @@ def request_page():
     pickup_locations = Location.query.filter_by(pickup=True).order_by(Location.name).all()
     all_locations = Location.query.order_by(Location.name).all()
 
+    for loc in all_locations:
+        print(loc.location_id, loc.name, loc.lat, loc.lng)
+
     if request.method == "POST":
         ccid = request.form.get("student_id")
         email = request.form.get("email")
@@ -75,7 +78,7 @@ def request_page():
         "request.html",
         pickup_locations=pickup_locations,
         all_locations=all_locations,
-        maps_key=os.getenv("MAPS_API_KEY")
+        maps_key=os.getenv("MAPS_KEY")
     )
 
 

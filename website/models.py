@@ -12,14 +12,6 @@ class Walk(db.Model): # Database schema for Notes
     s_loc = db.Column(db.Integer, db.ForeignKey('location.location_id'))
     e_loc = db.Column(db.Integer, db.ForeignKey('location.location_id'))
 
-    @property
-    def coordinates(self):
-        return (self.e_loc_lat, self.e_loc_lng)
-
-    @coordinates.setter
-    def coordinates(self, value):
-        self.e_loc_lat, self.e_loc_lng = value
-
 class Walker(db.Model): 
     id = db.Column(db.Integer, primary_key=True)
     ccid = db.Column(db.String(25))
@@ -65,3 +57,5 @@ class Location(db.Model):
     name = db.Column(db.String(1000), nullable=False)
     pickup = db.Column(db.Boolean)
     dropoff_20_min_dist = db.Column(db.Boolean)
+    lat = db.Column(db.Float, nullable=True)
+    lng = db.Column(db.Float, nullable=True)

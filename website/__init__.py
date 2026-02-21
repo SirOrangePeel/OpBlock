@@ -109,17 +109,21 @@ def create_database(app):
 
             with open(file.path, "r") as f:
                 for line in f:
-                    name = line.strip()
-                    if not name:
-                        print("Not work")
+                    line = line.strip()
+                    if not line:
                         continue
-
+                    parts = line.split(",")
+                    if len(parts) != 3:
+                        print("Skipping bad line:", line)
+                        continue
+                    name, lat, lng = parts
                     location = Location(
-                        name=name,
+                        name=name.strip(),
+                        lat=float(lat.strip()),
+                        lng=float(lng.strip()),
                         pickup=flags["pickup"],
                         dropoff_20_min_dist=flags["dropoff_20_min_dist"]
                     )
-
                     db.session.add(location)
 
         db.session.commit()
