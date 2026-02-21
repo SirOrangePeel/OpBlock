@@ -57,3 +57,5 @@ class Location(db.Model):
     name = db.Column(db.String(1000), nullable=False)
     pickup = db.Column(db.Boolean)
     dropoff_20_min_dist = db.Column(db.Boolean)
+    lat = db.Column(db.Float, nullable=True)
+    lng = db.Column(db.Float, nullable=True)
